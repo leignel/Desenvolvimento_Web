@@ -8,11 +8,13 @@ import Navbar from "./components/Navbar";
 function App() {
   return (
     <>
+      <h1>Site do Cristian</h1>
       <Navbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/home/:user" element={<Home />} />
+        <Route path="/login/:parametro" element={<Login />} />
         <Route path="/contato" element={<Contato />} />
         <Route path="*" element={<h1>Página Não Encontrada</h1>} />
       </Routes>

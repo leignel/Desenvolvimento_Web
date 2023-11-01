@@ -1,15 +1,25 @@
-import { Link } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useState } from "react";
+
+const dados = {
+  login: "cristianleignel",
+  senha: "senha@123",
+};
 
 function Login() {
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
 
+  const navigate = useNavigate();
+  const { parametro } = useParams();
+  const { state } = useLocation();
+  console.log(state);
+
   const entrar = () => {
     console.log("Função entrar");
     if (login == "" || senha == "") {
       console.log("Preencha os campos de login e senha");
-    } else {
+    } else if (login == dados.login && senha == dados.senha) {
       const info = {
         login: login,
         senha: senha,
@@ -17,6 +27,10 @@ function Login() {
       console.log(info);
       setLogin("");
       setSenha("");
+
+      navigate("/home/" + login);
+    } else {
+      console.log("Login ou senha inválidos!");
     }
   };
 

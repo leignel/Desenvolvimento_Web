@@ -1,8 +1,13 @@
+import { useParams } from "react-router-dom";
+
 function Home() {
+  const { user } = useParams();
+
   return (
-    <div>
+    <>
       <h1>Home</h1>
-    </div>
+      {user == undefined ? <h2>Olá Visitante!!!</h2> : <h2>Olá {user}</h2>}
+    </>
   );
 }
 

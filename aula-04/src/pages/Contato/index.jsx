@@ -1,8 +1,19 @@
+import { useNavigate } from "react-router-dom";
+
 function Contato() {
+  const navigate = useNavigate();
+  const parametro = "Eu sou um parâmetro";
+
+  const handleClick = () => {
+    navigate("/login/" + parametro, {
+      state: { info: "Eu sou uma informação" },
+    });
+  };
   return (
-    <div>
+    <>
       <h1>Contato</h1>
-    </div>
+      <button onClick={handleClick}>CLIQUE AQUI</button>
+    </>
   );
 }
 
