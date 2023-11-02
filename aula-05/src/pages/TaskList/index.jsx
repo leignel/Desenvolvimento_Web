@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Task from "./components/Task";
+import CreateTask from "./components/CreateTask";
 
 const url = "https://6542c27001b5e279de1f8a8c.mockapi.io/tasklist";
 
@@ -8,17 +10,36 @@ const TaskList = () => {
   const [tarefas, setTarefas] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const cadastrar = () => {
-    setTarefas([...tarefas, novaTarefa]);
-    console.log([...tarefas, novaTarefa]);
-    setNovaTarefa("");
+  //  function cadastrar(){}
+  const cadastrar = async () => {
+    const task = {
+      title: novaTarefa,
+      description: "description 2",
+      prioridade: "alta",
+      done: false,
+    };
+
+    try {
+      const { data } = await axios.post(url, task);
+      console.log(data);
+      // console.log([...tarefas, novaTarefa]); FORMA ANTIGA
+      setTarefas([...tarefas, data]);
+      setNovaTarefa("");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const excluirTarefa = (id) => {
+  const excluirTarefa = async (id) => {
     console.log("Excluir Tarefa: ", id);
-    const novoArray = tarefas.filter((item) => item.id != id);
-    console.log(novoArray);
-    setTarefas(novoArray);
+    try {
+      const { data } = await axios.delete(`${url}/${id}`);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+    // const arrayFiltrado = tarefas.filter((item) => item.id != id);
+    // setTarefas(arrayFiltrado);
   };
 
   // async function getTasks(){}
@@ -45,27 +66,27 @@ const TaskList = () => {
     getTasks();
   }, []);
 
+  useEffect(() => {
+    console.log("SOU UM USEFEEEEEEEEECT");
+  }, []);
+
   // if (loading) return <h1>GARREGANDO...</h1>;
 
   return (
     <main>
       <h1>Lista de Tarefas</h1>
       <section>
-        <h2>Cadastre sua tarefa</h2>
-        <input
-          type="text"
-          value={novaTarefa}
-          onChange={(e) => setNovaTarefa(e.target.value)}
+        <CreateTask
+          novaTarefa={novaTarefa}
+          setNovaTarefa={setNovaTarefa}
+          cadastrar={cadastrar}
         />
-        <button onClick={cadastrar}>Cadastrar</button>
+        <hr />
       </section>
       <section>
         <h2>Lista de Tarefas</h2>
         {tarefas.map((item) => (
-          <div key={item.id}>
-            <h3>{item.title}</h3>
-            <button onClick={() => excluirTarefa(item.id)}>Excluir</button>
-          </div>
+          <Task key={item.id} item={item} excluirTarefa={excluirTarefa} />
         ))}
       </section>
     </main>
