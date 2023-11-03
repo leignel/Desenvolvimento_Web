@@ -9,12 +9,13 @@ const TaskList = () => {
   const [novaTarefa, setNovaTarefa] = useState("");
   const [tarefas, setTarefas] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [prova, setProva] = useState(false);
 
-  //  function cadastrar(){}
+  //   function cadastrar(){}
   const cadastrar = async () => {
     const task = {
       title: novaTarefa,
-      description: "description 2",
+      description: "description",
       prioridade: "alta",
       done: false,
     };
@@ -35,11 +36,12 @@ const TaskList = () => {
     try {
       const { data } = await axios.delete(`${url}/${id}`);
       console.log(data);
+      // const arrayFiltrado = tarefas.filter((item) => item.id != data.id);
+      const arrayFiltrado = tarefas.filter((item) => item.id != id);
+      setTarefas(arrayFiltrado);
     } catch (err) {
       console.log(err);
     }
-    // const arrayFiltrado = tarefas.filter((item) => item.id != id);
-    // setTarefas(arrayFiltrado);
   };
 
   // async function getTasks(){}
@@ -60,17 +62,36 @@ const TaskList = () => {
     }
   };
 
-  // O useEffect é executado logo após a montagem do componente na tela
-  // UseEffect( () => {}, [])
+  const editarTarefa = async (id) => {
+    const task = {
+      prioridade: "alta",
+    };
+    try {
+      const { data } = await axios.put(`${url}/1`, task);
+      const arrayEditado = tarefas.map((item) => {
+        if (1 == item.id) {
+          return data;
+        }
+        return item;
+      });
+      setTarefas(arrayEditado);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // O useEffect é executado logo após a PRIMEIRA montagem do componente na tela
+  // useEffect( () => {}, [])
   useEffect(() => {
     getTasks();
   }, []);
 
   useEffect(() => {
-    console.log("SOU UM USEFEEEEEEEEECT");
+    console.log("SOU UM USEEFFECT!");
   }, []);
 
-  // if (loading) return <h1>GARREGANDO...</h1>;
+  // if (loading) return <h1>CARREGANDO.....</h1>;
 
   return (
     <main>
@@ -81,12 +102,16 @@ const TaskList = () => {
           setNovaTarefa={setNovaTarefa}
           cadastrar={cadastrar}
         />
-        <hr />
       </section>
       <section>
         <h2>Lista de Tarefas</h2>
         {tarefas.map((item) => (
-          <Task key={item.id} item={item} excluirTarefa={excluirTarefa} />
+          <Task
+            key={item.id}
+            item={item}
+            excluirTarefa={excluirTarefa}
+            editarTarefa={editarTarefa}
+          />
         ))}
       </section>
     </main>

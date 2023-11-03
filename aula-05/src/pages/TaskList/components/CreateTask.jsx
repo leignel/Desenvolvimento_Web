@@ -1,9 +1,11 @@
 import React from "react";
+import { Titulo, TituloAmarelo } from "./styledComponents";
 
 const CreateTask = ({ novaTarefa, setNovaTarefa, cadastrar }) => {
   return (
     <>
-      <h2>Cadastre sua tarefa</h2>
+      <Titulo>Cadastre sua tarefa</Titulo>
+      <TituloAmarelo>Cadastre sua tarefa</TituloAmarelo>
       <input
         type="text"
         value={novaTarefa}
