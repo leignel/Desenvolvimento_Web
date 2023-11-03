@@ -9,7 +9,9 @@ const CreateTask = ({ novaTarefa, setNovaTarefa, cadastrar }) => {
         value={novaTarefa}
         onChange={(e) => setNovaTarefa(e.target.value)}
       />
-      <button onClick={cadastrar}>Cadastrar</button>
+      <button onClick={cadastrar} className="m-4 btn btn-primary">
+        Cadastrar
+      </button>
     </>
   );
 };
